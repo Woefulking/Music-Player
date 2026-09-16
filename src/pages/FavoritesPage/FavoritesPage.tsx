@@ -33,13 +33,13 @@ export const FavoritesPage = () => {
 
         <div className="text-center md:text-left space-y-2 min-w-0">
           <span className="text-xs uppercase font-bold tracking-widest text-zinc-500">
-            Плейлист
+            Playlist
           </span>
           <h1 className="text-4xl md:text-6xl font-black text-zinc-100 tracking-tight">
-            Любимые треки
+            Favorite tracks
           </h1>
           <p className="text-sm text-zinc-400">
-            Всего треков: <span className="font-semibold text-zinc-200">{favorites.length}</span>
+            Total tracks: <span className="font-semibold text-zinc-200">{favorites.length}</span>
           </p>
         </div>
       </div>

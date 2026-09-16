@@ -1,78 +1,66 @@
-# React + TypeScript + Vite
+# Music Player
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-brown)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?logo=react-router&logoColor=white)
 
-Currently, two official plugins are available:
+[Description](#description) • [Features](#features) • [Installation](#installation) • [Screenshots](#screenshots)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Description
 
-## React Compiler
+A responsive music streaming SPA built on top of the decentralized
+Audius API. The core is a custom audio layer that survives page
+transitions, manages a persistent play queue, and syncs user data
+(favorites, history) to localStorage.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+The project focuses on three things: component-driven UI architecture,
+isolating complex state through custom hooks, and safe async data
+handling (request cancellation, debouncing, race-condition guards).
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Features
 
-## Expanding the ESLint configuration
+**Data & API**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Live track and playlist data from Audius nodes
+- Search with debounced autocomplete and AbortController-based
+  request discarding
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Playback**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Global audio element kept alive across routes
+- Queue system with absolute indexing and auto-advance
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**UX**
 
+- Persistent favorites synced with localStorage
+- URL-driven routing for tracks, artists, and app states
+
+## Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/Woefulking/Music-Player.git
+cd Music-Player
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
+
+Run the project
+
+```bash
+npm run dev
+```
+
+## Screenshots
+
+![home](./screenshots/home.png)
+
+![player](./screenshots/player.png)
+
+![favorites](./screenshots/favorites.png)
