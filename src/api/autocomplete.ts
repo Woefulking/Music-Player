@@ -14,13 +14,13 @@ export async function autocomplete(query: string, signal: AbortSignal) {
 
   const data = await response.json();
 
-  const albums = data.data.albums
-    .map(mapAlbum)
-    .filter((album: Album | null): album is Album => album !== null);
+  // const albums = data.data.albums
+  //   .map(mapAlbum)
+  //   .filter((album: Album | null): album is Album => album !== null);
   const tracks = data.data.tracks
     .map(mapTrack)
     .filter((track: Track | null): track is Track => track !== null);
-  const artists = data.data.users.map(mapArtist);
+  // const artists = data.data.users.map(mapArtist);
 
-  return { albums, tracks, artists };
+  return tracks;
 }

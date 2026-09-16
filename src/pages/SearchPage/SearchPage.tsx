@@ -1,15 +1,15 @@
 import { useOutletContext } from 'react-router-dom';
-import type { AudioData, Track } from '../../types/types';
+import type { Track } from '../../types/types';
 import { Link } from 'react-router-dom';
 import LoadingIcon from '/assets/icons/loading.svg';
 
 interface SearchPageProps {
-  audioData: AudioData;
+  tracks: Track[];
   isLoading: boolean;
   onPlayTrack: (track: Track, tracks: Track[]) => void;
 }
 export const SearchPage = () => {
-  const { audioData, isLoading, onPlayTrack } = useOutletContext<SearchPageProps>();
+  const { tracks, isLoading, onPlayTrack } = useOutletContext<SearchPageProps>();
 
   if (isLoading) {
     return (
@@ -19,7 +19,7 @@ export const SearchPage = () => {
     );
   }
 
-  if (!audioData) {
+  if (!tracks) {
     return (
       <div className="mx-auto flex flex-1 items-center justify-center text-zinc-400 text-2xl">
         Nothing found
@@ -29,17 +29,17 @@ export const SearchPage = () => {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-6">
-      <div className="max-h-[80vh] overflow-y-auto pr-2">
-        <section className="mb-10">
+      <div className="max-h-[70vh] overflow-y-auto pr-2">
+        <section>
           <h2 className="mb-4 text-xl font-semibold">Tracks</h2>
 
           <div className="flex flex-col gap-1">
-            {audioData.tracks.map((track) => (
+            {tracks.map((track) => (
               <Link
                 to={`/track/${track.id}`}
                 key={track.id}
                 onClick={() => {
-                  onPlayTrack(track, audioData.tracks);
+                  onPlayTrack(track, tracks);
                 }}
                 className="group flex cursor-pointer items-center gap-4 rounded-lg p-3 transition hover:bg-zinc-900"
               >
@@ -63,7 +63,7 @@ export const SearchPage = () => {
           </div>
         </section>
 
-        <section className="mb-10">
+        {/* <section className="mb-10">
           <h2 className="mb-4 text-xl font-semibold">Albums</h2>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -109,7 +109,7 @@ export const SearchPage = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
       </div>
     </div>
   );

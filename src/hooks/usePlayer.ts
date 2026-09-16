@@ -1,42 +1,157 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Track } from '../types/types';
 
 export function usePlayer() {
-  const [currentSong, setCurrentSong] = useState<Track | null>(null);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [queue, setQueue] = useState<Track[]>([]);
 
-  const currentIndex = queue.findIndex((track) => track.id === currentSong?.id);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  function playTrack(track: Track, tracks: Track[]) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const [volume, setVolume] = useState(0.5);
+  const [isMute, setIsMute] = useState(false);
+
+  const previousVolume = useRef(volume);
+
+  const currentIndex = queue.findIndex((track) => track.id === currentTrack?.id);
+
+  function setTracks(track: Track, tracks: Track[]) {
+    setCurrentTrack(track);
     setQueue(tracks);
-    setCurrentSong(track);
   }
 
   function nextTrack() {
     if (currentIndex === -1) return;
-
     if (currentIndex < queue.length - 1) {
-      setCurrentSong(queue[currentIndex + 1]);
+      setCurrentTrack(queue[currentIndex + 1]);
     }
   }
 
   function previousTrack() {
+    if (currentIndex === -1) return;
     if (currentIndex > 0) {
-      setCurrentSong(queue[currentIndex - 1]);
+      setCurrentTrack(queue[currentIndex - 1]);
     }
   }
 
-  function stop() {
-    setCurrentSong(null);
-    setQueue([]);
+  function togglePlay() {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((error) => {
+          console.error('Playback failed:', error);
+          setIsPlaying(false);
+        });
+    }
   }
 
+  function toggleMute() {
+    if (!audioRef.current) return;
+
+    if (!isMute) {
+      previousVolume.current = volume;
+      audioRef.current.volume = 0;
+      setVolume(0);
+      setIsMute(true);
+    } else {
+      audioRef.current.volume = previousVolume.current;
+      setVolume(previousVolume.current);
+      setIsMute(false);
+    }
+  }
+
+  function changeVolume(newVolume: number) {
+    if (!audioRef.current) return;
+
+    audioRef.current.volume = newVolume;
+    setVolume(newVolume);
+
+    if (newVolume > 0) {
+      previousVolume.current = newVolume;
+      setIsMute(false);
+    }
+  }
+
+  function seekTime(newTime: number) {
+    if (!audioRef.current) return;
+
+    audioRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  }
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+    };
+
+    const handleEnded = () => {
+      nextTrack();
+    };
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [currentTrack?.stream.url]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    setCurrentTime(0);
+    setDuration(0);
+
+    audio.currentTime = 0;
+
+    audio
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((error) => {
+        console.error('Playback failed:', error);
+        setIsPlaying(false);
+      });
+  }, [currentTrack?.stream.url]);
+
   return {
-    currentSong,
+    audioRef,
+    currentTrack,
     queue,
-    playTrack,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    isMute,
+    setTracks,
     nextTrack,
     previousTrack,
-    stop,
+    togglePlay,
+    toggleMute,
+    changeVolume,
+    seekTime,
   };
 }
