@@ -9,14 +9,10 @@
 
 ## Description
 
-A responsive music streaming SPA built on top of the decentralized
-Audius API. The core is a custom audio layer that survives page
-transitions, manages a persistent play queue, and syncs user data
-(favorites, history) to localStorage.
+This project is a modern, responsive music streaming web application integrated with the decentralized **Audius Web3 API**. 
+It features a fully custom audio core that allows continuous playback across different pages, complete history queue management, and offline-ready user data syncing.
 
-The project focuses on three things: component-driven UI architecture,
-isolating complex state through custom hooks, and safe async data
-handling (request cancellation, debouncing, race-condition guards).
+The project demonstrates solid UI architecture, complex state isolation via custom hooks, and safe data handling patterns in front-end development.
 
 ## Features
 
