@@ -8,9 +8,6 @@ function App() {
 
   const player = usePlayer();
 
-  // TODO
-  // Список избранного
-
   return (
     <div className="relative flex min-h-dvh flex-col bg-zinc-950 text-zinc-100 gap-4">
       <Header onSelectSong={player.setTracks} />
