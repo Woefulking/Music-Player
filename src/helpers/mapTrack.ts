@@ -25,11 +25,13 @@ export function mapTrack(track: AudiusTrack): Track | null {
       id: track.user.id,
       name: track.user.name,
       handle: track.user.handle,
-      profile_picture: {
-        '150x150': track.user.profile_picture['150x150'],
-        '480x480': track.user.profile_picture['480x480'],
-        '1000x1000': track.user.profile_picture['1000x1000'],
-      },
+      profile_picture: track.user.profile_picture
+        ? {
+            '150x150': track.user.profile_picture['150x150'],
+            '480x480': track.user.profile_picture['480x480'],
+            '1000x1000': track.user.profile_picture['1000x1000'],
+          }
+        : null,
     },
 
     stream: {

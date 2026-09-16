@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import type { AudioData, Track } from '../../types/types';
+import type { Track } from '../../types/types';
 
 interface AutocompleteProps {
   suggestions: Track[];

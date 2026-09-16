@@ -1,7 +1,5 @@
-import { mapAlbum } from 'helpers/mapAlbum';
-import { mapArtist } from 'helpers/mapArtist';
 import { mapTrack } from 'helpers/mapTrack';
-import type { Album, Track } from 'types/types';
+import type { Track } from 'types/types';
 
 export async function autocomplete(query: string, signal: AbortSignal) {
   const response = await fetch(`https://api.audius.co/v1/search/autocomplete?query=${query}`, {
