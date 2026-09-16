@@ -1,7 +1,7 @@
 export interface Artwork {
-  '150x150': string;
-  '480x480': string;
-  '1000x1000': string;
+  '150x150'?: string;
+  '480x480'?: string;
+  '1000x1000'?: string;
 }
 
 export interface Track {
@@ -13,13 +13,13 @@ export interface Track {
   playCount: number;
   favorite: number;
 
-  artwork: Artwork;
+  artwork: Artwork | null;
 
   user: {
     id: string;
     name: string;
     handle: string;
-    profile_picture: Artwork;
+    profile_picture: Artwork | null;
   };
 
   stream: {
@@ -41,13 +41,13 @@ export interface AudiusTrack {
   play_count: number;
   favorite_count: number;
 
-  artwork: Artwork;
+  artwork: Artwork | null;
 
   user: {
     id: string;
     name: string;
     handle: string;
-    profile_picture: Artwork;
+    profile_picture: Artwork | null;
   };
 
   stream: { url: string } | null;

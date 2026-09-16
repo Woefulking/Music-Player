@@ -1,7 +1,7 @@
-import { mapAlbum } from '../helpers/mapAlbum';
-import { mapArtist } from '../helpers/mapArtist';
-import { mapTrack } from '../helpers/mapTrack';
-import type { Album, Track } from '../types/types';
+import { mapAlbum } from 'helpers/mapAlbum';
+import { mapArtist } from 'helpers/mapArtist';
+import { mapTrack } from 'helpers/mapTrack';
+import type { Album, Track } from 'types/types';
 
 export async function search(query: string) {
   const response = await fetch(`https://api.audius.co/v1/search/full?query=${query}&limit=15`);

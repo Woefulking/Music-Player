@@ -4,6 +4,7 @@ import App from '../App';
 import { TrackPage } from '../pages/TrackPage/TrackPage';
 import { ArtistPage } from '../pages/ArtistPage/ArtistPage';
 import { HomePage } from '../pages/HomePage/HomePage';
+import { FavoritesPage } from 'src/pages/FavoritesPage/FavoritesPage';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: 'artist/:id',
         element: <ArtistPage />,
+      },
+      {
+        path: 'favorites',
+        element: <FavoritesPage />,
       },
     ],
   },

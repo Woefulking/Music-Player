@@ -1,4 +1,4 @@
-import { mapArtist } from '../helpers/mapArtist';
+import { mapArtist } from 'helpers/mapArtist';
 
 export async function getUserById(query: string) {
   const response = await fetch(`https://api.audius.co/v1/users/${query}`);

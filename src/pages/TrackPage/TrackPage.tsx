@@ -1,5 +1,5 @@
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import type { Track } from '../../types/types';
+import type { Track } from 'types/types';
 import { useEffect } from 'react';
 
 interface TrackPageProps {
@@ -19,11 +19,15 @@ export const TrackPage = () => {
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center pb-24">
       <div className="flex flex-col items-center justify-center">
-        <img
-          src={track.artwork['480x480']}
-          alt={track.title}
-          className="w-72 h-72 rounded-lg object-cover"
-        />
+        {track.artwork?.['480x480'] ? (
+          <img
+            src={track.artwork['480x480']}
+            alt={track.title}
+            className="w-72 h-72 rounded-lg object-cover"
+          />
+        ) : (
+          <div className="w-72 h-72 shrink-0 rounded-lg bg-zinc-800" />
+        )}
 
         <h1 className="mt-8 text-3xl font-bold">{track.title}</h1>
 

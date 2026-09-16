@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import type { Artist, Track } from '../../types/types';
-import { getUserById } from '../../api/getUserById';
-import { getUserTracks } from '../../api/getUserTracks';
+import type { Artist, Track } from 'types/types';
+import { getUserById } from 'api/getUserById';
+import { getUserTracks } from 'api/getUserTracks';
 import LoadingIcon from '/assets/icons/loading.svg';
 
 interface ArtistPageProps {
@@ -94,11 +94,15 @@ export const ArtistPage = () => {
             >
               <span className="w-6 text-center text-sm text-zinc-600">{index + 1}</span>
 
-              <img
-                src={track.artwork['150x150']}
-                alt={track.title}
-                className="h-12 w-12 shrink-0 rounded-md object-cover"
-              />
+              {track.artwork?.['150x150'] ? (
+                <img
+                  src={track.artwork['150x150']}
+                  alt={track.title}
+                  className="h-12 w-12 shrink-0 rounded-md object-cover"
+                />
+              ) : (
+                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800" />
+              )}
 
               <div className="min-w-0 flex-1 flex flex-col items-start">
                 <p className="truncate font-medium text-zinc-100">{track.title}</p>

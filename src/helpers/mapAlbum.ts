@@ -1,4 +1,4 @@
-import type { Album, AudiusAlbum } from '../types/types';
+import type { Album, AudiusAlbum } from 'types/types';
 import { mapArtist } from './mapArtist';
 
 export function mapAlbum(album: AudiusAlbum): Album {

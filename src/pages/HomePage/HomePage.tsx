@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { Track } from '../../types/types';
+import type { Track } from 'types/types';
 import { useOutletContext } from 'react-router-dom';
 import LoadingIcon from '/assets/icons/loading.svg';
-import { getFeelingLuckyTracks } from '../../api/getFeelingLuckyTracks';
+import { getFeelingLuckyTracks } from 'api/getFeelingLuckyTracks';
 
 interface HomeContextProps {
   onPlayTrack: (track: Track, tracks: Track[]) => void;
@@ -59,11 +59,15 @@ export const HomePage = () => {
                 onClick={() => onPlayTrack(track, randomTracks)}
                 className="group flex cursor-pointer items-center gap-4 rounded-xl border border-zinc-900 bg-zinc-900/40 p-4 transition hover:bg-zinc-900 hover:border-zinc-800"
               >
-                <img
-                  src={track.artwork['150x150']}
-                  alt={track.title}
-                  className="h-16 w-16 shrink-0 rounded-lg object-cover shadow-md"
-                />
+                {track?.artwork?.['150x150'] ? (
+                  <img
+                    src={track.artwork['150x150']}
+                    alt={track.title}
+                    className="h-16 w-16 shrink-0 rounded-lg object-cover shadow-md"
+                  />
+                ) : (
+                  <div className="h-16 w-16 shrink-0 rounded-lg shadow-md bg-zinc-800" />
+                )}
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold text-sm text-zinc-100 group-hover:text-white transition">

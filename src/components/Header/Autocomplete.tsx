@@ -2,7 +2,7 @@ import type { Ref } from 'react';
 import type { AudioData, Track } from '../../types/types';
 
 interface AutocompleteProps {
-  suggestions: AudioData | null;
+  suggestions: Track[];
   ref: Ref<HTMLDivElement>;
   onSelect: (track: Track, tracks: Track[]) => void;
   onClose: () => void;
@@ -11,11 +11,9 @@ interface AutocompleteProps {
 export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: AutocompleteProps) => {
   if (!suggestions) return null;
 
-  const hasResults =
-    suggestions &&
-    (suggestions.tracks.length > 0 ||
-      suggestions.albums.length > 0 ||
-      suggestions.artists.length > 0);
+  const hasResults = suggestions && suggestions.length > 0;
+  // suggestions.albums.length > 0 ||
+  // suggestions.artists.length > 0);
 
   return (
     <div
@@ -24,27 +22,29 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
     >
       {!hasResults && <div className="p-4 text-center text-md text-zinc-500">Nothing found</div>}
 
-      {suggestions.tracks.length > 0 && (
+      {suggestions.length > 0 && (
         <div className="mb-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Tracks
           </h3>
 
           <div className="flex flex-col">
-            {suggestions.tracks.map((track) => (
+            {suggestions.map((track) => (
               <button
                 key={track.id}
                 onClick={() => {
-                  onSelect(track, suggestions.tracks);
+                  onSelect(track, suggestions);
                   onClose();
                 }}
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
               >
-                <img
-                  src={track.artwork['150x150']}
-                  alt=""
-                  className="h-10 w-10 shrink-0 rounded object-cover"
-                />
+                {track.artwork && (
+                  <img
+                    src={track.artwork['150x150'] || undefined}
+                    alt=""
+                    className="h-10 w-10 shrink-0 rounded object-cover"
+                  />
+                )}
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-zinc-100">{track.title}</p>
@@ -61,7 +61,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
         </div>
       )}
 
-      {suggestions.albums.length > 0 && (
+      {/* {suggestions.albums.length > 0 && (
         <div className="mb-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Albums
@@ -119,7 +119,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

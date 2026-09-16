@@ -1,15 +1,40 @@
-import { useOutletContext } from 'react-router-dom';
-import type { Track } from '../../types/types';
+import { useOutletContext, useSearchParams } from 'react-router-dom';
+import type { Track } from 'types/types';
 import { Link } from 'react-router-dom';
 import LoadingIcon from '/assets/icons/loading.svg';
+import { useEffect, useState } from 'react';
+import { search } from 'api/search';
 
 interface SearchPageProps {
-  tracks: Track[];
-  isLoading: boolean;
   onPlayTrack: (track: Track, tracks: Track[]) => void;
 }
 export const SearchPage = () => {
-  const { tracks, isLoading, onPlayTrack } = useOutletContext<SearchPageProps>();
+  const { onPlayTrack } = useOutletContext<SearchPageProps>();
+
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('q') || '';
+
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!query.trim()) return;
+
+    async function startSearch() {
+      setIsLoading(true);
+      try {
+        const data = await search(query);
+        setTracks(data);
+      } catch (error) {
+        console.error('ERROR', error);
+        setTracks([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    startSearch();
+  }, [query]);
 
   if (isLoading) {
     return (
@@ -43,11 +68,15 @@ export const SearchPage = () => {
                 }}
                 className="group flex cursor-pointer items-center gap-4 rounded-lg p-3 transition hover:bg-zinc-900"
               >
-                <img
-                  src={track.artwork['480x480']}
-                  alt={track.title}
-                  className="h-14 w-14 shrink-0 rounded-md object-cover"
-                />
+                {track.artwork?.['150x150'] ? (
+                  <img
+                    src={track.artwork['150x150']}
+                    alt={track.title}
+                    className="h-14 w-14 shrink-0 rounded-md object-cover"
+                  />
+                ) : (
+                  <div className="h-14 w-14 shrink-0 rounded-full bg-zinc-800" />
+                )}
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-zinc-100">{track.title}</p>

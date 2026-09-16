@@ -16,6 +16,11 @@ export function usePlayer() {
 
   const previousVolume = useRef(volume);
 
+  const [favorites, setFavorites] = useState<Track[]>(() => {
+    const saved = localStorage.getItem('favorites');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const currentIndex = queue.findIndex((track) => track.id === currentTrack?.id);
 
   function setTracks(track: Track, tracks: Track[]) {
@@ -88,6 +93,18 @@ export function usePlayer() {
     setCurrentTime(newTime);
   }
 
+  function toggleFavorite(track: Track) {
+    setFavorites((prevFavorites) => {
+      const isAlreadyFavorite = prevFavorites.some((fav) => fav.id === track.id);
+
+      if (isAlreadyFavorite) {
+        return prevFavorites.filter((fav) => fav.id !== track.id);
+      } else {
+        return [track, ...prevFavorites];
+      }
+    });
+  }
+
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -137,6 +154,10 @@ export function usePlayer() {
       });
   }, [currentTrack?.stream.url]);
 
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
   return {
     audioRef,
     currentTrack,
@@ -146,6 +167,8 @@ export function usePlayer() {
     duration,
     volume,
     isMute,
+    favorites,
+    toggleFavorite,
     setTracks,
     nextTrack,
     previousTrack,

@@ -1,4 +1,4 @@
-import type { AudiusTrack, Track } from '../types/types';
+import type { AudiusTrack, Track } from 'types/types';
 
 export function mapTrack(track: AudiusTrack): Track | null {
   if (!track.stream) {
@@ -14,12 +14,13 @@ export function mapTrack(track: AudiusTrack): Track | null {
     playCount: track.play_count,
     favorite: track.favorite_count,
 
-    artwork: {
-      '150x150': track.artwork['150x150'],
-      '480x480': track.artwork['480x480'],
-      '1000x1000': track.artwork['1000x1000'],
-    },
-
+    artwork: track.artwork
+      ? {
+          '150x150': track.artwork['150x150'],
+          '480x480': track.artwork['480x480'],
+          '1000x1000': track.artwork['1000x1000'],
+        }
+      : null,
     user: {
       id: track.user.id,
       name: track.user.name,
