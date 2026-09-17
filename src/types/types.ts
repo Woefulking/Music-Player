@@ -1,7 +1,7 @@
 export interface Artwork {
-  '150x150'?: string;
-  '480x480'?: string;
-  '1000x1000'?: string;
+  '150x150': string;
+  '480x480': string;
+  '1000x1000': string;
 }
 
 export interface Track {
@@ -83,11 +83,12 @@ export interface Album {
     stream: boolean;
     download: boolean;
   };
+  tracks: Track[];
 }
 
 export interface AudiusAlbum {
   id: string;
-  title: string;
+  playlist_name: string;
   description: string | null;
   release_date: string;
   track_count: number;
@@ -99,6 +100,7 @@ export interface AudiusAlbum {
     stream: boolean;
     download: boolean;
   };
+  tracks: AudiusTrack[];
 }
 
 export interface AudioData {

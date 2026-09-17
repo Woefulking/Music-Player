@@ -1,7 +1,7 @@
 import { mapTrack } from 'helpers/mapTrack';
 import type { Track } from 'types/types';
 
-export async function getUserTracks(query: string) {
+export async function getArtistTracks(query: string) {
   const response = await fetch(`https://api.audius.co/v1/users/${query}/tracks`);
 
   if (!response.ok) {

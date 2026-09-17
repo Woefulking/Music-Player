@@ -25,6 +25,7 @@
     "paths": {
       "src/*": ["./src/*"],
       "types/*": ["./src/types/*"],
+      "pages/*": ["./src/pages/*"],
       "helpers/*": ["./src/helpers/*"],
       "components/*": ["./src/components/*"],
       "hooks/*": ["./src/hooks/*"],

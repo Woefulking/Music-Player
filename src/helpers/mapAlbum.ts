@@ -1,10 +1,11 @@
-import type { Album, AudiusAlbum } from 'types/types';
+import type { Album, AudiusAlbum, Track } from 'types/types';
 import { mapArtist } from './mapArtist';
+import { mapTrack } from './mapTrack';
 
 export function mapAlbum(album: AudiusAlbum): Album {
   return {
     id: album.id,
-    title: album.title,
+    title: album.playlist_name,
     description: album.description,
     releaseDate: album.release_date,
     trackCount: album.track_count,
@@ -16,5 +17,8 @@ export function mapAlbum(album: AudiusAlbum): Album {
       stream: album.access.stream,
       download: album.access.download,
     },
+    tracks: album.tracks
+      ? album.tracks.map(mapTrack).filter((track): track is Track => track !== null)
+      : [],
   };
 }

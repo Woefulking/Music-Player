@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import type { Artist, Track } from 'types/types';
-import { getUserById } from 'api/getUserById';
-import { getUserTracks } from 'api/getUserTracks';
+import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import type { Album, Artist, Track } from 'types/types';
+
 import LoadingIcon from '/assets/icons/loading.svg';
+import { getArtistById } from 'src/api/getArtistById';
+import { getArtistTracks } from 'src/api/geArtistTracks';
+import { getArtistAlbums } from 'src/api/getArtistAlbums';
 
 interface ArtistPageProps {
   onPlayTrack: (track: Track, tracks: Track[]) => void;
@@ -15,7 +17,8 @@ export const ArtistPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const [artistInfo, setArtistInfo] = useState<Artist | null>(null);
-  const [artistTracks, setArtistTracks] = useState<Track[] | []>([]);
+  const [artistTracks, setArtistTracks] = useState<Track[]>([]);
+  const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,10 +27,15 @@ export const ArtistPage = () => {
       try {
         setIsLoading(true);
 
-        const [artistData, tracksData] = await Promise.all([getUserById(id), getUserTracks(id)]);
+        const [artistData, tracksData, artistAlbums] = await Promise.all([
+          getArtistById(id),
+          getArtistTracks(id),
+          getArtistAlbums(id),
+        ]);
 
         setArtistInfo(artistData);
         setArtistTracks(tracksData);
+        setArtistAlbums(artistAlbums);
       } catch (error) {
         console.error('Error loading artist profile', error);
       } finally {
@@ -80,10 +88,45 @@ export const ArtistPage = () => {
         </div>
       </div>
 
+      {artistAlbums.length > 0 && (
+        <div>
+          <h2 className="mb-4 text-xl font-semibold text-zinc-200">Albums</h2>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {artistAlbums.map((album) => (
+              <Link
+                to={`/album/${album.id}`}
+                key={album.id}
+                className="group cursor-pointer rounded-xl bg-zinc-900/30 border border-zinc-900 p-3 transition hover:bg-zinc-900 hover:border-zinc-800 flex flex-col min-w-0"
+              >
+                <div className="aspect-square w-full rounded-lg overflow-hidden bg-zinc-800 relative mb-3 shadow-md">
+                  {album.artwork?.['150x150'] ? (
+                    <img
+                      src={album.artwork['150x150']}
+                      alt={album.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center text-3xl bg-linear-to-br from-zinc-800 to-zinc-900 text-zinc-600"></div>
+                  )}
+                </div>
+
+                <div className="min-w-0 flex-1 flex flex-col justify-between">
+                  <p className="truncate font-semibold text-sm text-zinc-100 group-hover:text-white transition">
+                    {album.title}
+                  </p>
+                  <p className="text-xs text-zinc-400 mt-1">{album.tracks.length} tracks</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div>
         <h2 className="mb-4 text-xl font-semibold">Tracks</h2>
 
-        <div className="overflow-hidden rounded-xl border border-zinc-800 max-h-107.5 overflow-y-auto">
+        <div className="overflow-hidden rounded-xl border border-zinc-800">
           {artistTracks.map((track, index) => (
             <button
               key={track.id}

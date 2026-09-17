@@ -11,6 +11,7 @@ export default defineConfig({
     alias: {
       src: path.resolve(__dirname, './src'),
       types: path.resolve(__dirname, './src/types'),
+      pages: path.resolve(__dirname, './src/pages'),
       helpers: path.resolve(__dirname, './src/helpers'),
       components: path.resolve(__dirname, './src/components'),
       hooks: path.resolve(__dirname, './src/hooks'),
