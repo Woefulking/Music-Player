@@ -50,7 +50,7 @@ export const ArtistPage = () => {
     return (
       <div className="mx-auto w-full flex-1 flex flex-col gap-4 justify-center items-center">
         <p>Loading profile...</p>
-        <img src={LoadingIcon} alt="loading" className="w-24 h-24" />
+        <img src={LoadingIcon} alt="loading" className="w-12 h-12 md:w-24 md:h-24" />
       </div>
     );
   }
@@ -67,39 +67,44 @@ export const ArtistPage = () => {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 py-10">
-      <div className="mb-4 flex items-center gap-6">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 sm:py-10 space-y-8 pb-32">
+      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left border-b border-zinc-900 pb-6">
         {artistInfo.profilePicture ? (
           <img
             src={artistInfo.profilePicture['480x480']}
             alt={artistInfo.handle}
-            className="h-32 w-32 shrink-0 rounded-full object-cover"
+
+            className="h-24 w-24 sm:h-32 sm:w-32 shrink-0 rounded-full object-cover shadow-xl border border-zinc-800"
           />
         ) : (
-          <div className="h-32 w-32 shrink-0 rounded-full bg-zinc-800" />
+          <div className="h-24 w-24 sm:h-32 sm:w-32 shrink-0 rounded-full bg-zinc-800 shadow-xl" />
         )}
 
         <div className="min-w-0">
-          <p className="mb-1 text-sm text-zinc-500">Artist</p>
-
-          <h1 className="text-3xl font-bold tracking-tight">{artistInfo.handle}</h1>
-
-          <p className="mt-2 text-sm text-zinc-400">{artistTracks.length} tracks</p>
+          <p className="mb-0.5 sm:mb-1 text-xs sm:text-sm font-semibold uppercase tracking-wider text-zinc-500">
+            Artist
+          </p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-zinc-100">
+            {artistInfo.handle}
+          </h1>
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-zinc-400">
+            {artistTracks.length} tracks
+          </p>
         </div>
       </div>
 
       {artistAlbums.length > 0 && (
-        <div>
-          <h2 className="mb-4 text-xl font-semibold text-zinc-200">Albums</h2>
+        <div className="space-y-3 sm:space-y-4">
+          <h2 className="text-lg sm:text-xl font-bold text-zinc-200 px-1">Albums</h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {artistAlbums.map((album) => (
               <Link
                 to={`/album/${album.id}`}
                 key={album.id}
-                className="group cursor-pointer rounded-xl bg-zinc-900/30 border border-zinc-900 p-3 transition hover:bg-zinc-900 hover:border-zinc-800 flex flex-col min-w-0"
+                className="group cursor-pointer rounded-xl bg-zinc-900/30 border border-zinc-900 p-2 sm:p-3 transition hover:bg-zinc-900 hover:border-zinc-800 flex flex-col min-w-0 active:scale-[0.99]"
               >
-                <div className="aspect-square w-full rounded-lg overflow-hidden bg-zinc-800 relative mb-3 shadow-md">
+                <div className="aspect-square w-full rounded-lg overflow-hidden bg-zinc-800 relative mb-2 sm:mb-3 shadow-sm">
                   {album.artwork?.['150x150'] ? (
                     <img
                       src={album.artwork['150x150']}
@@ -107,15 +112,14 @@ export const ArtistPage = () => {
                       className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="h-full w-full flex items-center justify-center text-3xl bg-linear-to-br from-zinc-800 to-zinc-900 text-zinc-600"></div>
+                    <div className="h-full w-full flex items-center justify-center text-2xl bg-linear-to-br from-zinc-800 to-zinc-900 text-zinc-600"></div>
                   )}
                 </div>
 
                 <div className="min-w-0 flex-1 flex flex-col justify-between">
-                  <p className="truncate font-semibold text-sm text-zinc-100 group-hover:text-white transition">
+                  <p className="truncate font-semibold text-xs sm:text-sm text-zinc-100 group-hover:text-white transition">
                     {album.title}
                   </p>
-                  <p className="text-xs text-zinc-400 mt-1">{album.tracks.length} tracks</p>
                 </div>
               </Link>
             ))}
@@ -123,37 +127,42 @@ export const ArtistPage = () => {
         </div>
       )}
 
-      <div>
-        <h2 className="mb-4 text-xl font-semibold">Tracks</h2>
+      <div className="space-y-3 sm:space-y-4">
+        <h2 className="text-lg sm:text-xl font-bold text-zinc-200 px-1">Tracks</h2>
 
-        <div className="overflow-hidden rounded-xl border border-zinc-800">
+        <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/10">
           {artistTracks.map((track, index) => (
             <button
               key={track.id}
               onClick={() => {
                 onPlayTrack(track, artistTracks);
               }}
-              className="w-full group flex items-center gap-4 border-b border-zinc-800 p-3 transition last:border-b-0 hover:bg-zinc-900"
+              className="w-full group flex items-center gap-3 sm:gap-4 border-b border-zinc-800 p-2 sm:p-3 transition last:border-b-0 hover:bg-zinc-900 text-left active:scale-[0.995]"
             >
-              <span className="w-6 text-center text-sm text-zinc-600">{index + 1}</span>
+              <span className="w-5 text-center text-xs sm:text-sm text-zinc-600 group-hover:text-zinc-400 shrink-0">
+                {index + 1}
+              </span>
 
               {track.artwork?.['150x150'] ? (
                 <img
                   src={track.artwork['150x150']}
                   alt={track.title}
-                  className="h-12 w-12 shrink-0 rounded-md object-cover"
+                  className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md object-cover border border-zinc-800 shadow-sm"
                 />
               ) : (
-                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800" />
+                <div className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md bg-zinc-800 flex items-center justify-center text-zinc-500 text-xs shadow-sm"></div>
               )}
 
-              <div className="min-w-0 flex-1 flex flex-col items-start">
-                <p className="truncate font-medium text-zinc-100">{track.title}</p>
-
-                <p className="truncate text-sm text-zinc-500">{track.user.handle}</p>
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-medium text-xs sm:text-sm text-zinc-100 group-hover:text-red-400 transition">
+                  {track.title}
+                </p>
+                <p className="truncate text-[10px] sm:text-xs text-zinc-400 mt-0.5">
+                  {track.user.handle}
+                </p>
               </div>
 
-              <span className="text-sm tabular-nums text-zinc-500">
+              <span className="text-xs sm:text-sm tabular-nums text-zinc-500 shrink-0">
                 {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, '0')}
               </span>
             </button>

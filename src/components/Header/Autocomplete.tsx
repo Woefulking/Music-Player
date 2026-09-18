@@ -18,16 +18,16 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
   return (
     <div
       ref={ref}
-      className="max-h-[80vh] overflow-y-auto absolute left-1/2 top-full z-20 mt-2 w-150 -translate-x-1/2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 p-3 shadow-2xl"
+      className="fixed sm:absolute left-0 sm:left-1/2 top-15 sm:top-full z-50 mt-1 sm:mt-2 w-full sm:w-150 sm:-translate-x-1/2 max-h-[calc(100vh-60px)] sm:max-h-[80vh] overflow-y-auto rounded-none sm:rounded-xl border-x-0 border-b sm:border border-zinc-800 bg-zinc-950 p-3 shadow-2xl"
     >
       {!hasResults && <div className="p-4 text-center text-md text-zinc-500">Nothing found</div>}
 
-      {suggestions.tracks.length > 0 && (
+      {/* СЕКЦИЯ ТРЕКОВ */}
+      {suggestions.tracks && suggestions.tracks.length > 0 && (
         <div className="mb-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Tracks
           </h3>
-
           <div className="flex flex-col">
             {suggestions.tracks.map((track) => (
               <button
@@ -38,21 +38,24 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
                 }}
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
               >
-                {track.artwork && (
+                {track.artwork?.['150x150'] ? (
                   <img
-                    src={track.artwork['150x150'] || undefined}
+                    src={track.artwork['150x150']}
                     alt=""
                     className="h-10 w-10 shrink-0 rounded object-cover"
                   />
+                ) : (
+                  <div className="h-10 w-10 shrink-0 rounded bg-zinc-800 flex items-center justify-center text-xs text-zinc-500">
+                    🎵
+                  </div>
                 )}
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-zinc-100">{track.title}</p>
-
                   <p className="truncate text-xs text-zinc-500">{track.user.handle}</p>
                 </div>
 
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-zinc-500 shrink-0">
                   {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, '0')}
                 </span>
               </button>
@@ -61,30 +64,37 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
         </div>
       )}
 
-      {suggestions.albums.length > 0 && (
+      {/* СЕКЦИЯ АЛЬБОМОВ */}
+      {suggestions.albums && suggestions.albums.length > 0 && (
         <div className="mb-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Albums
           </h3>
-
           <div className="flex flex-col">
             {suggestions.albums.map((album) => (
               <Link
                 to={`/album/${album.id}`}
                 key={album.id}
-                type="button"
+                onClick={onClose} // 🌟 Полезно закрывать автокомплит при переходе на страницу альбома
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
               >
-                <img
-                  src={album.artwork['150x150']}
-                  alt=""
-                  className="h-10 w-10 shrink-0 rounded object-cover"
-                />
+                {album.artwork?.['150x150'] ? (
+                  <img
+                    src={album.artwork['150x150']}
+                    alt=""
+                    className="h-10 w-10 shrink-0 rounded object-cover"
+                  />
+                ) : (
+                  <div className="h-10 w-10 shrink-0 rounded bg-zinc-800 flex items-center justify-center text-xs text-zinc-500">
+                    💽
+                  </div>
+                )}
 
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-zinc-100">{album.title}</p>
-
-                  <p className="truncate text-xs text-zinc-500">{album.artist.handle}</p>
+                  <p className="truncate text-xs text-zinc-500">
+                    {album.artist?.handle || 'Unknown'}
+                  </p>
                 </div>
               </Link>
             ))}
@@ -92,18 +102,18 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
         </div>
       )}
 
-      {suggestions.artists.length > 0 && (
+      {/* СЕКЦИЯ АРТИСТОВ */}
+      {suggestions.artists && suggestions.artists.length > 0 && (
         <div>
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Artists
           </h3>
-
           <div className="flex flex-col">
             {suggestions.artists.map((artist) => (
               <Link
                 to={`/artist/${artist.id}`}
                 key={artist.id}
-                type="button"
+                onClick={onClose} // 🌟 Закрываем автокомплит при переходе к артисту
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
               >
                 {artist.profilePicture ? (
@@ -116,7 +126,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
                   <div className="h-10 w-10 shrink-0 rounded-full bg-zinc-800" />
                 )}
 
-                <p className="truncate text-sm font-medium text-zinc-100">{artist.handle}</p>
+                <p className="truncate text-sm font-medium text-zinc-100 flex-1">{artist.handle}</p>
               </Link>
             ))}
           </div>

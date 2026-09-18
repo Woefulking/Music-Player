@@ -1,20 +1,47 @@
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { Track } from 'types/types';
-import { useEffect } from 'react';
-
-interface TrackPageProps {
-  track: Track;
-}
+import { useEffect, useState } from 'react';
+import LoadingIcon from '/assets/icons/loading.svg';
+import { getTrackById } from 'src/api/getTrackById';
 
 export const TrackPage = () => {
-  const { track } = useOutletContext<TrackPageProps>();
-  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const [track, setTrack] = useState<Track | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (track.id) {
-      navigate(`/track/${track.id}`, { replace: true });
+    async function loadAlbumData() {
+      if (!id) return;
+      try {
+        setIsLoading(true);
+        const data = await getTrackById(id);
+        setTrack(data);
+      } catch (error) {
+        console.error('Error loading album details', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }, [track.id, navigate]);
+
+    loadAlbumData();
+  }, [id]);
+
+  if (!track) {
+    return (
+      <div className="flex flex-1 items-center justify-center text-zinc-400 text-xl">
+        Track not found
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mx-auto w-full flex-1 flex flex-col gap-4 justify-center items-center">
+        <p>Loading track...</p>
+        <img src={LoadingIcon} alt="loading" className="w-12 h-12 md:w-24 md:h-24" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center pb-24">

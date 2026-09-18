@@ -12,6 +12,7 @@ function App() {
       <Header onSelectSong={player.setTracks} />
       <Outlet
         context={{
+          track: player.currentTrack,
           favorites: player.favorites,
           onToggleFavorite: player.toggleFavorite,
           onPlayTrack: player.setTracks,
