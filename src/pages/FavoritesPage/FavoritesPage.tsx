@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 import type { Track } from 'src/types/types';
 import HeartIcon from '/assets/icons/heart.svg';
-import HeartRedIcon from '/assets/icons/heart-red.svg';
+import HeartRedIcon from '/assets/icons/heartred.svg';
 
 interface FavoritesContextProps {
   favorites: Track[];
@@ -28,7 +28,7 @@ export const FavoritesPage = () => {
     <div className="flex-1 w-full max-w-5xl mx-auto px-6 py-4 space-y-8 pb-32 animate-fade-in">
       <div className="flex flex-col md:flex-row items-center md:items-end gap-6 border-b border-zinc-800 pb-8">
         <div className="w-40 h-40 md:w-48 md:h-48 rounded-2xl bg-linear-to-br from-red-600 to-rose-900 shadow-2xl flex items-center justify-center text-6xl select-none shrink-0 border border-red-500/20">
-          ❤️
+          <img src={HeartRedIcon} alt="favorites" className="w-16 h-16" />
         </div>
 
         <div className="text-center md:text-left space-y-2 min-w-0">

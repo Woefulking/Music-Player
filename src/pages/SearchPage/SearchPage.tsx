@@ -1,5 +1,5 @@
 import { useOutletContext, useSearchParams } from 'react-router-dom';
-import type { Track } from 'types/types';
+import type { AudioData, Track } from 'types/types';
 import { Link } from 'react-router-dom';
 import LoadingIcon from '/assets/icons/loading.svg';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ export const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
 
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [audioData, setAudioData] = useState<AudioData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -24,10 +24,10 @@ export const SearchPage = () => {
       setIsLoading(true);
       try {
         const data = await search(query);
-        setTracks(data);
+        setAudioData(data);
       } catch (error) {
         console.error('ERROR', error);
-        setTracks([]);
+        setAudioData(null);
       } finally {
         setIsLoading(false);
       }
@@ -44,7 +44,7 @@ export const SearchPage = () => {
     );
   }
 
-  if (!tracks) {
+  if (!audioData) {
     return (
       <div className="mx-auto flex flex-1 items-center justify-center text-zinc-400 text-2xl">
         Nothing found
@@ -59,12 +59,12 @@ export const SearchPage = () => {
           <h2 className="mb-4 text-xl font-semibold">Tracks</h2>
 
           <div className="flex flex-col gap-1">
-            {tracks.map((track) => (
+            {audioData.tracks.map((track) => (
               <Link
                 to={`/track/${track.id}`}
                 key={track.id}
                 onClick={() => {
-                  onPlayTrack(track, tracks);
+                  onPlayTrack(track, audioData.tracks);
                 }}
                 className="group flex cursor-pointer items-center gap-4 rounded-lg p-3 transition hover:bg-zinc-900"
               >
@@ -92,12 +92,13 @@ export const SearchPage = () => {
           </div>
         </section>
 
-        {/* <section className="mb-10">
+        <section className="mb-10">
           <h2 className="mb-4 text-xl font-semibold">Albums</h2>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {audioData.albums.map((album) => (
-              <div
+              <Link
+                to={`/album/${album.id}`}
                 key={album.id}
                 className="group cursor-pointer rounded-xl p-3 transition hover:bg-zinc-900"
               >
@@ -110,7 +111,7 @@ export const SearchPage = () => {
                 <p className="truncate font-medium text-zinc-100">{album.title}</p>
 
                 <p className="truncate text-sm text-zinc-400">{album.artist.handle}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -120,7 +121,8 @@ export const SearchPage = () => {
 
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
             {audioData.artists.map((artist) => (
-              <div
+              <Link
+                to={`/artist/${artist.id}`}
                 key={artist.id}
                 className="flex cursor-pointer items-center gap-4 rounded-lg p-3 transition hover:bg-zinc-900"
               >
@@ -135,10 +137,10 @@ export const SearchPage = () => {
                 )}
 
                 <p className="truncate font-medium text-zinc-100">{artist.handle}</p>
-              </div>
+              </Link>
             ))}
           </div>
-        </section> */}
+        </section>
       </div>
     </div>
   );

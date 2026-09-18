@@ -3,6 +3,7 @@ import { useOutletContext, useParams } from 'react-router-dom';
 import { getAlbumById } from 'src/api/getAlbumById';
 import type { Album, Track } from 'src/types/types';
 import LoadingIcon from '/assets/icons/loading.svg';
+import RedHeartIcon from '/assets/icons/heartred.svg';
 
 interface AlbumPageProps {
   onPlayTrack: (track: Track, tracks: Track[]) => void;
@@ -36,7 +37,7 @@ export const AlbumPage = () => {
   if (isLoading) {
     return (
       <div className="mx-auto w-full flex-1 flex flex-col gap-4 justify-center items-center">
-        <p>Loading profile...</p>
+        <p>Loading album...</p>
         <img src={LoadingIcon} alt="loading" className="w-24 h-24" />
       </div>
     );
@@ -78,7 +79,10 @@ export const AlbumPage = () => {
             {album.favoriteCount > 0 && (
               <>
                 <span className="text-zinc-600">•</span>
-                <span className="text-zinc-300">❤️ {album.favoriteCount}</span>
+                <div className="text-zinc-300 flex flex-row gap-2 items-center">
+                  <img src={RedHeartIcon} alt="favorite icon" className="w-6 h-6" />
+                  {album.favoriteCount}
+                </div>
               </>
             )}
           </div>

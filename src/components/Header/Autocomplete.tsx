@@ -70,7 +70,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
           <div className="flex flex-col">
             {suggestions.albums.map((album) => (
               <Link
-                to={`album/${album.id}`}
+                to={`/album/${album.id}`}
                 key={album.id}
                 type="button"
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
@@ -101,7 +101,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
           <div className="flex flex-col">
             {suggestions.artists.map((artist) => (
               <Link
-                to={`artist/${artist.id}`}
+                to={`/artist/${artist.id}`}
                 key={artist.id}
                 type="button"
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
