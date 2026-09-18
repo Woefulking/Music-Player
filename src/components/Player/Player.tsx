@@ -8,7 +8,7 @@ import PreviousIcon from '/assets/icons/previous.svg';
 import type { Track } from '../../types/types';
 import { Link } from 'react-router-dom';
 import HeartIcon from '/assets/icons/heart.svg';
-import HeartRedIcon from '/assets/icons/heart-red.svg';
+import HeartRedIcon from '/assets/icons/heartred.svg';
 
 interface PlayerProps {
   track: Track;
