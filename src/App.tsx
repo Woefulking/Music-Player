@@ -5,7 +5,6 @@ import { Player } from './components/Player/Player';
 
 function App() {
   const navigate = useNavigate();
-
   const player = usePlayer();
 
   return (
@@ -13,12 +12,9 @@ function App() {
       <Header onSelectSong={player.setTracks} />
       <Outlet
         context={{
-          track: player.currentTrack,
           favorites: player.favorites,
           onToggleFavorite: player.toggleFavorite,
           onPlayTrack: player.setTracks,
-          onPrevious: player.previousTrack,
-          onNext: player.nextTrack,
           onBack: () => navigate(-1),
         }}
       />

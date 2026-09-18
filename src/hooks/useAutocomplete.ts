@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import type { Track } from '../types/types';
+import type { AudioData } from '../types/types';
 import { autocomplete } from '../api/autocomplete';
 
 export const useAutocomplete = (searchedSong: string) => {
-  const [suggestions, setSuggestions] = useState<Track[]>([]);
+  const [suggestions, setSuggestions] = useState<AudioData | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     if (searchedSong.trim().length < 1) {
-      setSuggestions([]);
+      setSuggestions(null);
       setShowSuggestions(false);
       return;
     }
@@ -27,7 +27,7 @@ export const useAutocomplete = (searchedSong: string) => {
           return;
         }
 
-        setSuggestions([]);
+        setSuggestions(null);
       }
     }, 300);
 

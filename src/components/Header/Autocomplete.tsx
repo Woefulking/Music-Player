@@ -1,8 +1,9 @@
 import type { Ref } from 'react';
-import type { Track } from '../../types/types';
+import type { AudioData, Track } from '../../types/types';
+import { Link } from 'react-router-dom';
 
 interface AutocompleteProps {
-  suggestions: Track[];
+  suggestions: AudioData | null;
   ref: Ref<HTMLDivElement>;
   onSelect: (track: Track, tracks: Track[]) => void;
   onClose: () => void;
@@ -11,9 +12,8 @@ interface AutocompleteProps {
 export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: AutocompleteProps) => {
   if (!suggestions) return null;
 
-  const hasResults = suggestions && suggestions.length > 0;
-  // suggestions.albums.length > 0 ||
-  // suggestions.artists.length > 0);
+  const hasResults = suggestions && suggestions.tracks.length > 0;
+  suggestions.albums.length > 0 || suggestions.artists.length > 0;
 
   return (
     <div
@@ -22,18 +22,18 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
     >
       {!hasResults && <div className="p-4 text-center text-md text-zinc-500">Nothing found</div>}
 
-      {suggestions.length > 0 && (
+      {suggestions.tracks.length > 0 && (
         <div className="mb-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Tracks
           </h3>
 
           <div className="flex flex-col">
-            {suggestions.map((track) => (
+            {suggestions.tracks.map((track) => (
               <button
                 key={track.id}
                 onClick={() => {
-                  onSelect(track, suggestions);
+                  onSelect(track, suggestions.tracks);
                   onClose();
                 }}
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
@@ -61,7 +61,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
         </div>
       )}
 
-      {/* {suggestions.albums.length > 0 && (
+      {suggestions.albums.length > 0 && (
         <div className="mb-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500">
             Albums
@@ -69,7 +69,8 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
 
           <div className="flex flex-col">
             {suggestions.albums.map((album) => (
-              <button
+              <Link
+                to={`album/${album.id}`}
                 key={album.id}
                 type="button"
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
@@ -85,7 +86,7 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
 
                   <p className="truncate text-xs text-zinc-500">{album.artist.handle}</p>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -99,7 +100,8 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
 
           <div className="flex flex-col">
             {suggestions.artists.map((artist) => (
-              <button
+              <Link
+                to={`artist/${artist.id}`}
                 key={artist.id}
                 type="button"
                 className="cursor-pointer flex items-center gap-3 rounded-lg p-2 text-left transition hover:bg-zinc-800"
@@ -115,11 +117,11 @@ export const Autocomplete = ({ suggestions, ref, onSelect, onClose }: Autocomple
                 )}
 
                 <p className="truncate text-sm font-medium text-zinc-100">{artist.handle}</p>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };
