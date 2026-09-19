@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Track } from '../types/types';
+import { shuffle } from 'src/helpers/shuffle';
 
 export function usePlayer() {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [originalQueue, setOriginalQueue] = useState<Track[]>([]);
   const [queue, setQueue] = useState<Track[]>([]);
+
+  const [isShuffle, setIsShuffle] = useState<boolean>(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -23,9 +27,34 @@ export function usePlayer() {
 
   const currentIndex = queue.findIndex((track) => track.id === currentTrack?.id);
 
+  function getShuffledQueue(track: Track, tracksArray: Track[]) {
+    const filtered = tracksArray.filter((t) => t.id !== track.id);
+    const shuffled = shuffle([...filtered]);
+    return [track, ...shuffled];
+  }
+
   function setTracks(track: Track, tracks: Track[]) {
     setCurrentTrack(track);
-    setQueue(tracks);
+    setOriginalQueue(tracks);
+
+    if (isShuffle) {
+      setQueue(getShuffledQueue(track, tracks));
+    } else {
+      setQueue(tracks);
+    }
+  }
+
+  function toggleShuffle() {
+    if (!currentTrack) return;
+
+    const nextShuffleState = !isShuffle;
+    setIsShuffle(nextShuffleState);
+
+    if (nextShuffleState) {
+      setQueue(getShuffledQueue(currentTrack, originalQueue)); // Вызываем хелпер
+    } else {
+      setQueue(originalQueue);
+    }
   }
 
   function nextTrack() {
@@ -168,6 +197,8 @@ export function usePlayer() {
     volume,
     isMute,
     favorites,
+    isShuffle,
+    toggleShuffle,
     toggleFavorite,
     setTracks,
     nextTrack,

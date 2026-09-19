@@ -9,6 +9,7 @@ import type { Track } from '../../types/types';
 import { Link } from 'react-router-dom';
 import HeartIcon from '/assets/icons/heart.svg';
 import HeartRedIcon from '/assets/icons/heartred.svg';
+import ShuffleIcon from '/assets/icons/shuffle.svg';
 
 interface PlayerProps {
   track: Track;
@@ -18,6 +19,8 @@ interface PlayerProps {
   volume: number;
   isMute: boolean;
   isFavorite: boolean;
+  isShuffle: boolean;
+  onToggleShuffle: () => void;
   onToggleFavorite: () => void;
   onPrevious: () => void;
   onNext: () => void;
@@ -35,6 +38,8 @@ export const Player = ({
   volume,
   isMute,
   isFavorite,
+  isShuffle,
+  onToggleShuffle,
   onToggleFavorite,
   onPrevious,
   onNext,
@@ -69,9 +74,7 @@ export const Player = ({
                 className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-md object-cover border border-zinc-800"
               />
             ) : (
-              <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-md bg-zinc-800 flex items-center justify-center text-zinc-500 text-xs shadow-sm">
-                🎵
-              </div>
+              <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-md bg-zinc-800 flex items-center justify-center text-zinc-500 text-xs shadow-sm"></div>
             )}
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs sm:text-sm font-medium text-zinc-100 group-hover:underline">
@@ -98,6 +101,12 @@ export const Player = ({
         </div>
 
         <div className="flex w-[35%] md:flex-1 flex-row items-center justify-end md:justify-center gap-1 sm:gap-4 max-w-none md:max-w-2xl">
+          <button
+            onClick={onToggleShuffle}
+            className={`flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0 ${isShuffle && 'bg-zinc-800'}`}
+          >
+            <img src={ShuffleIcon} alt="Previous song" className="h-4 w-4 sm:h-8 sm:w-8" />
+          </button>
           <button
             onClick={onPrevious}
             className="flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0"

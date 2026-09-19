@@ -28,6 +28,8 @@ function App() {
           volume={player.volume}
           isMute={player.isMute}
           isFavorite={player.favorites.some((fav) => fav.id === player.currentTrack?.id)}
+          isShuffle={player.isShuffle}
+          onToggleShuffle={player.toggleShuffle}
           onToggleFavorite={() => player.toggleFavorite(player.currentTrack!)}
           onPrevious={player.previousTrack}
           onNext={player.nextTrack}
