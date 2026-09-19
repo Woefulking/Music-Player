@@ -62,7 +62,7 @@ export const Player = ({
       </div>
 
       <div className="mx-auto flex w-full items-center justify-between gap-3 sm:gap-4 max-w-6xl mt-1">
-        <div className="flex items-center gap-2 sm:gap-4 w-[65%] md:w-1/4 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-4 w-[60%] md:w-1/4 min-w-0">
           <Link
             to={`/track/${track.id}`}
             className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 group"
@@ -76,6 +76,7 @@ export const Player = ({
             ) : (
               <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-md bg-zinc-800 flex items-center justify-center text-zinc-500 text-xs shadow-sm"></div>
             )}
+
             <div className="min-w-0 flex-1">
               <p className="truncate text-xs sm:text-sm font-medium text-zinc-100 group-hover:underline">
                 {track.title}
@@ -100,20 +101,25 @@ export const Player = ({
           </button>
         </div>
 
-        <div className="flex w-[35%] md:flex-1 flex-row items-center justify-end md:justify-center gap-1 sm:gap-4 max-w-none md:max-w-2xl">
+        <div className="flex w-[40%] md:flex-1 flex-row items-center justify-end md:justify-center gap-2 sm:gap-4 max-w-none md:max-w-2xl shrink-0">
           <button
             onClick={onToggleShuffle}
-            className={`flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0 ${isShuffle && 'bg-zinc-800'}`}
+            className={`flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0 ${isShuffle ? 'bg-zinc-800 border border-zinc-700' : ''}`}
+            title={isShuffle ? 'Выключить перемешивание' : 'Включить перемешивание'}
           >
-            <img src={ShuffleIcon} alt="Previous song" className="h-4 w-4 sm:h-8 sm:w-8" />
+            <img
+              src={ShuffleIcon}
+              alt="Shuffle"
+              className={`h-8 w-8 transition-opacity ${isShuffle ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
+            />
           </button>
+
           <button
             onClick={onPrevious}
-            className="flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0"
+            className="hidden sm:flex h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0"
           >
             <img src={PreviousIcon} alt="Previous song" className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
-
           <button
             onClick={onTogglePlay}
             className="flex h-10 w-10 sm:h-11 sm:w-11 cursor-pointer items-center justify-center rounded-full transition hover:bg-zinc-800 shrink-0"

@@ -62,8 +62,7 @@ export const SearchPage = () => {
 
           <div className="flex flex-col gap-1">
             {audioData.tracks.map((track) => (
-              <Link
-                to={`/track/${track.id}`}
+              <button
                 key={track.id}
                 onClick={() => {
                   onPlayTrack(track, audioData.tracks);
@@ -92,7 +91,7 @@ export const SearchPage = () => {
                 <span className="text-xs sm:text-sm tabular-nums text-zinc-500 shrink-0">
                   {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, '0')}
                 </span>
-              </Link>
+              </button>
             ))}
           </div>
         </section>
