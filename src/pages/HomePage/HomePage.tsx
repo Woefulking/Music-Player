@@ -48,7 +48,7 @@ export const HomePage = () => {
 
       <section>
         <h2 className="text-lg sm:text-xl font-bold text-zinc-200 mb-3 sm:mb-4 flex items-center gap-2">
-          🎲 "I'll Get Lucky" Playlist
+          "I'll Get Lucky" Playlist
         </h2>
 
         {randomTracks.length === 0 ? (
