@@ -7,7 +7,10 @@ export function usePlayer() {
   const [originalQueue, setOriginalQueue] = useState<Track[]>([]);
   const [queue, setQueue] = useState<Track[]>([]);
 
-  const [isShuffle, setIsShuffle] = useState<boolean>(false);
+  const [isShuffle, setIsShuffle] = useState<boolean>(() => {
+    const saved = localStorage.getItem('shuffle');
+    return saved ? JSON.parse(saved) : false;
+  });
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -186,6 +189,10 @@ export function usePlayer() {
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem('shuffle', JSON.stringify(isShuffle));
+  }, [isShuffle]);
 
   return {
     audioRef,
